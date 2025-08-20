@@ -15,6 +15,13 @@
 "ND_16-06",
 # url was fixed
 "ND 49-01",
+# sheet found on url, but wasnt in index, index was recreated
+"NQ_23-08",
+"NR_59-07",
+"NE_49-13",
+"NI_35-06",
+"NB_17-04",
+"SA_33-06",
 
 # no l4 tiles at all
 "NG_37-04"

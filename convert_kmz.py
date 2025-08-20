@@ -257,7 +257,7 @@ def convert_to_tiff(path, geometry, out_path):
             
             # Create final merged TIFF from VRT using gdal_translate (same as parse.py export_internal)
             creation_opts = '-co TILED=YES -co COMPRESS=JPEG -co JPEG_QUALITY=75 -co PHOTOMETRIC=YCBCR'
-            creation_opts += '--config GDAL_PAM_ENABLED NO'
+            creation_opts += ' --config GDAL_PAM_ENABLED NO'
             mask_options = '--config GDAL_TIFF_INTERNAL_MASK YES -b 1 -b 2 -b 3 -mask 4'
             perf_options = '--config GDAL_CACHEMAX 512'
             final_cmd = f'gdal_translate {perf_options} {mask_options} {creation_opts} "{vrt_path}" "{out_path}"'
