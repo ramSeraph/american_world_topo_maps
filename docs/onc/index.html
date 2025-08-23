@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MapLibre GL JS Projection Switcher</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src='https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div class="controls">
+    <button id="projection-toggle"><i class="fa-solid fa-sheet-plastic"></i></button>
+    <button id="terrain-toggle"><i class="fa-solid fa-mountain"></i></button>
+    <button id="vector-toggle"><i class="fa-solid fa-vector-square"></i></button>
+    <input id="opacity-slider" type="range" min="0" max="1" step="0.1" value="1">
+</div>
+
+<script>
+    const map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            version: 8,
+            sources: {
+                'osm': {
+                    type: 'raster',
+                    tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                    tileSize: 256,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                },
+                'raster-tiles': {
+                    type: 'raster',
+                    tiles: ['https://indianopenmaps.fly.dev/world/topo/american/onc/{z}/{x}/{y}.webp'],
+                    tileSize: 256,
+                    attribution: '<a href="https://www.lib.utexas.edu/maps/onc/">Perry-Castañeda Library Map Collection</a>'
+                },
+                'terrarium': {
+                    type: 'raster-dem',
+                    tiles: [
+                        'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'
+                    ],
+                    minzoom: 0,
+                    maxzoom: 15,
+                    tileSize: 256,
+                    encoding: 'terrarium'
+                },
+                'vector-data': {
+                    type: 'geojson',
+                    data: './index.geojson'
+                }
+            },
+            layers: [
+                {
+                    id: 'osm-tiles',
+                    type: 'raster',
+                    source: 'osm',
+                    minzoom: 0,
+                    maxzoom: 22
+                },
+                {
+                    id: 'simple-tiles',
+                    type: 'raster',
+                    source: 'raster-tiles',
+                    minzoom: 0,
+                    maxzoom: 22,
+                    paint: {
+                        'raster-opacity': 1
+                    }
+                },
+                {
+                    id: 'vector-layer',
+                    type: 'fill',
+                    source: 'vector-data',
+                    paint: {
+                        'fill-color': '#B42222',
+                        'fill-opacity': 0.5
+                    },
+                    layout: {
+                        'visibility': 'none'
+                    }
+                },
+                {
+                    id: 'vector-layer-line',
+                    type: 'line',
+                    source: 'vector-data',
+                    paint: {
+                        'line-color': '#000',
+                        'line-width': 2
+                    },
+                    layout: {
+                        'visibility': 'none'
+                    }
+                }
+            ]
+        },
+        center: [0, 0],
+        zoom: 1,
+        hash: true
+    });
+
+    map.on('style.load', () => {
+        map.setProjection({ 'type': 'globe' });
+        map.setTerrain({ source: 'terrarium', exaggeration: 3 });
+        document.querySelector('#terrain-toggle i').style.color = 'blue';
+        map.getCanvas().style.backgroundColor = 'black';
+
+        document.getElementById('projection-toggle').addEventListener('click', () => {
+            const buttonIcon = document.querySelector('#projection-toggle i');
+            const currentProjectionType = map.getProjection().type;
+            console.log('Current projection:', currentProjectionType);
+
+            if (currentProjectionType === 'mercator') {
+                map.setProjection({ 'type': 'globe' });
+                buttonIcon.classList.remove('fa-globe');
+                buttonIcon.classList.add('fa-sheet-plastic');
+            } else {
+                map.setProjection({ 'type': 'mercator' });
+                buttonIcon.classList.remove('fa-sheet-plastic');
+                buttonIcon.classList.add('fa-globe');
+            }
+        });
+
+        document.getElementById('opacity-slider').addEventListener('input', (e) => {
+            map.setPaintProperty('simple-tiles', 'raster-opacity', parseFloat(e.target.value));
+        });
+
+        document.getElementById('terrain-toggle').addEventListener('click', () => {
+            const terrain = map.getTerrain();
+            const buttonIcon = document.querySelector('#terrain-toggle i');
+            if (terrain) {
+                map.setTerrain(null);
+                buttonIcon.style.color = 'black';
+            } else {
+                map.setTerrain({ source: 'terrarium', exaggeration: 3 });
+                buttonIcon.style.color = 'blue';
+            }
+        });
+
+        document.getElementById('vector-toggle').addEventListener('click', () => {
+            const visibility = map.getLayoutProperty('vector-layer', 'visibility');
+            const buttonIcon = document.querySelector('#vector-toggle i');
+
+            if (visibility === 'visible') {
+                map.setLayoutProperty('vector-layer', 'visibility', 'none');
+                map.setLayoutProperty('vector-layer-line', 'visibility', 'none');
+                buttonIcon.style.color = 'black';
+            } else {
+                map.setLayoutProperty('vector-layer', 'visibility', 'visible');
+                map.setLayoutProperty('vector-layer-line', 'visibility', 'visible');
+                buttonIcon.style.color = 'blue';
+            }
+        });
+
+        map.on('click', 'vector-layer', (e) => {
+            new maplibregl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(e.features[0].properties.id)
+                .addTo(map);
+        });
+
+        map.on('mouseenter', 'vector-layer', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'vector-layer', () => {
+            map.getCanvas().style.cursor = '';
+        });
+    });
+</script>
+
+</body>
+</html>
