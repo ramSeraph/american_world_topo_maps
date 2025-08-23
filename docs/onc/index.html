@@ -115,7 +115,7 @@
 
     map.on('style.load', () => {
         map.setProjection({ 'type': 'globe' });
-        map.setTerrain({ source: 'terrarium', exaggeration: 3 });
+        map.setTerrain({ source: 'terrarium', exaggeration: 2 });
         document.querySelector('#terrain-toggle i').style.color = 'blue';
         map.getCanvas().style.backgroundColor = 'black';
 
