@@ -1,7 +1,23 @@
 
+# 1. Download the index page and filter links 
 wget -P data https://maps.lib.utexas.edu/maps/onc/
 
+# 2. Filter links to the images from the index page and save to a JSONL file
 uv run filter_links.py data/index.html ONC > data/all_links.jsonl
 
-uv run download_pages.py
+# 3. get metadata from the links file and create the data/sheet_map.json file
 uv run parse_pages.py
+
+# get the list of all sheet ids
+cat data/sheet_map.json| jq -r '. | keys[]' | sort > sheet_ids.txt
+
+# 4. Download all the files
+uv run download_files.py sheet_ids.txt
+
+# 5. use surya to get the OCR the sheets.. too slow on my machine.. ran it on GPU in vast.ai
+uv run surya_text.py
+
+# 6. Extract the projections from the extracted text to data/proj_map.json
+uv run collect_projections.py
+
+# 7. Manually georeference the missing ones
