@@ -29,34 +29,34 @@ cat mapstor/bad_sheets.txt >> pcl_to_process.txt
 uv run parse_pcl.py
 
 # 7. upload the georef files to github
-uvx --from gh-release-tools upload-to-release -r onc-georef -d export/gtiffs -e .tif
-uvx --from gh-release-tools generate-lists -r onc-georef -e .tif
+uvx --from gh-release-tools upload-to-release -r tpc-georef -d export/gtiffs -e .tif
+uvx --from gh-release-tools generate-lists -r tpc-georef -e .tif
 uvx --from topo-map-processor collect-bounds --bounds-dir export/bounds --output-file export/bounds.geojson
-gh release upload onc-georef export/bounds.geojson
+gh release upload tpc-georef export/bounds.geojson
 
 # 8. upload the orig files to github
-uvx --from gh-release-tools upload-to-release -r onc-orig -d data/raw -e .gif -e .map
+uvx --from gh-release-tools upload-to-release -r tpc-orig -d data/raw -e .gif -e .map
 
 mkdir pcl/data/to_push
 cat pcl_to_process.txt | xargs -I {} cp pcl/data/raw/{}.jpg pcl/data/to_push/
-uvx --from gh-release-tools upload-to-release -r onc-orig -d pcl/data/to_push -e .jpg
+uvx --from gh-release-tools upload-to-release -r tpc-orig -d pcl/data/to_push -e .jpg
 rm -rf pcl/data/to_push
 rm pcl_to_process.txt
 
-uvx --from gh-release-tools generate-lists -r onc-orig -e .jpg -e .gif -e .map
+uvx --from gh-release-tools generate-lists -r tpc-orig -e .jpg -e .gif -e .map
 
 
 # 9. now tile the georeferenced files
 GDAL_VERSION=$(gdalinfo --version | cut -d"," -f1 | cut -d" " -f2)
-uvx --with numpy --with pillow --with gdal==$GDAL_VERSION --from topo-map-processor tile --tiles-dir export/tiles --tiffs-dir export/gtiffs --max-zoom 10 --name ONC --description "ONC 1:1m maps" --attribution-file attribution.txt
+uvx --with numpy --with pillow --with gdal==$GDAL_VERSION --from topo-map-processor tile --tiles-dir export/tiles --tiffs-dir export/gtiffs --max-zoom 10 --name TPC --description "TPC 1:500k maps" --attribution-file attribution.txt
 
 # 10. finally generate the pmtiles mosaic
-uvx --from pmtiles-mosaic partition --from-source export/tiles --to-pmtiles export/pmtiles/ONC.pmtiles
+uvx --from pmtiles-mosaic partition --from-source export/tiles --to-pmtiles export/pmtiles/TPC.pmtiles
 
 # 11. upload the pmtiles file to github and add tiled list file
-gh release upload onc-pmtiles export/pmtiles/*
-gh release download onc-georef -p listing_files.csv 
-gh release upload onc-pmtiles listing_files.csv 
+gh release upload tpc-pmtiles export/pmtiles/*
+gh release download tpc-georef -p listing_files.csv 
+gh release upload tpc-pmtiles listing_files.csv 
 rm listing_files.csv
 
 

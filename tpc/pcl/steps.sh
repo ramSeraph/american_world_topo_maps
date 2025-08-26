@@ -1,9 +1,9 @@
 
 # 1. Download the index page and filter links 
-wget -P data https://maps.lib.utexas.edu/maps/onc/
+wget -P data https://maps.lib.utexas.edu/maps/tpc/
 
 # 2. Filter links to the images from the index page and save to a JSONL file
-uv run filter_links.py data/index.html ONC > data/all_links.jsonl
+uv run filter_links.py data/index.html TPC > data/all_links.jsonl
 
 # 3. get metadata from the links file and create the data/sheet_map.json file
 uv run parse_pages.py
@@ -19,5 +19,8 @@ uv run surya_text.py
 
 # 6. Extract the projections from the extracted text to data/proj_map.json
 uv run collect_projections.py
+
+# 7. Check for unique projection infos, usually a sign of OCR errors
+uv run check_projs.py
 
 # 7. Manually georeference the missing ones

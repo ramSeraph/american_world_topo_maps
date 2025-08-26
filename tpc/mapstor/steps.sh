@@ -6,10 +6,10 @@ set -e
 uvx --from internetarchive ia search -i "collection:topographic-maps" > data/mapstor_ids.txt
 
 # 2. filter for onc maps only
-cat data/mapstor_ids.txt| grep "\-\-onc\-\-" > data/onc_ids.txt
+cat data/mapstor_ids.txt| grep "\-\-tpc\-\-" > data/tpc_ids.txt
 
 # 3. get list of zip files for each id
-cat data/onc_ids.txt | xargs -I {} uvx --from internetarchive ia list {} -l | grep "zip$" > data/zip_urls.txt
+cat data/tpc_ids.txt | xargs -I {} uvx --from internetarchive ia list {} -l | grep "zip$" > data/zip_urls.txt
 
 # 4. collect the list of files in each zip file
 uv run list_zip_contents.py data/zip_urls.txt data/zip_files.csv

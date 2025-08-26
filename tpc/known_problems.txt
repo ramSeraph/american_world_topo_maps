@@ -1,0 +1,22 @@
+
+# sheets known to be around but are missing
+
+# Australia
+N13-D
+R13-B
+
+# Asia
+H10-D
+L09-B
+M13-A
+
+# North America
+F18-B
+
+# South America
+M26-A
+M26-D
+M26-C
+P27-B
+R23-A
+

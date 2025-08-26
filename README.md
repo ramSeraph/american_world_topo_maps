@@ -1,6 +1,6 @@
 # Topographic Maps of the World from the American Military/Air Force
 
-## Global Navigation Charts (JNC) # TODO
+## Global Navigation Charts (GNC) # TODO
   - Scale: 1:5,000,000
   - Coverage: Antarctica only
   - [Demo](https://ramseraph.github.io/american_world_topo_maps/gnc/)
@@ -24,9 +24,9 @@
   - [Georeferenced Sheets](https://github.com/ramseraph/american_world_topo_maps/releases/tag/onc-georef)
   - [PMTiles](https://github.com/ramseraph/american_world_topo_maps/releases/tag/onc-pmtiles)
 
-## Tactical Pilotage Charts (TPC) #TODO
+## Tactical Pilotage Charts (TPC)
   - Scale: 1:500,000
-  - Coverage: Global (except Antarctica)
+  - Coverage: Global (except Antarctica, but not all sheets are available)
   - [Demo](https://ramseraph.github.io/american_world_topo_maps/tpc/)
   - [Original Sheets](https://github.com/ramseraph/american_world_topo_maps/releases/tag/tpc-orig)
   - [Georeferenced Sheets](https://github.com/ramseraph/american_world_topo_maps/releases/tag/tpc-georef)
