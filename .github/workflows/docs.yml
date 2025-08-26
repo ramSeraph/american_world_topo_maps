@@ -21,6 +21,7 @@ jobs:
       - name: Collect-Ancillary-Files
         run: |
           gh release download onc-georef -p bounds.geojson -O docs/onc/index.geojson
+          gh release download tpc-georef -p bounds.geojson -O docs/tpc/index.geojson
 
       - name: Upload-Artifact
         uses: actions/upload-pages-artifact@v3
