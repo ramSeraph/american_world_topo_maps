@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js'></script>
+    <script src='https://unpkg.com/@india-boundary-corrector/maplibre-protocol/dist/index.global.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
         body { margin: 0; padding: 0; }
@@ -44,6 +45,8 @@
 </div>
 
 <script>
+    IndiaBoundaryCorrector.registerCorrectionProtocol(maplibregl);
+
     const map = new maplibregl.Map({
         container: 'map',
         style: {
@@ -51,7 +54,7 @@
             sources: {
                 'osm': {
                     type: 'raster',
-                    tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                    tiles: ['ibc://https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
                     tileSize: 256,
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 },
