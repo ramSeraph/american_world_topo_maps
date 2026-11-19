@@ -7,9 +7,12 @@ georeferenced files. The
 [bounds file](https://github.com/ramSeraph/american_world_topo_maps/releases/download/jog-georef/bounds.geojson)
 also records sheet-level provenance where available.
 
-- **jog_alt** is a historical collection of JOG scans restored from the
-  `to_share_temp/jog_alt` archive. The upstream institution is not recorded
-  consistently for every file.
+- **University of Texas Libraries** — much of the historical `jog_alt`
+  collection corresponds to the
+  [Perry-Castañeda Library JOG collection](https://maps.lib.utexas.edu/maps/jog/).
+  The files were restored from `to_share_temp/jog_alt`. Five sampled PDFs and
+  JPEGs are byte-for-byte identical to their Texas catalogue downloads. The
+  precise upstream source has not been established for every archived file.
 - **University of California, Berkeley** — [Earth Sciences & Map Library digital collections](https://digicoll.lib.berkeley.edu/).
 - **University of Kansas** — [Joint Operations Graphics collection](https://libgis.ku.edu/jogs/).
 - **National Library of Australia** — [JOG catalogue search](https://catalogue.nla.gov.au/Search/Home?lookfor=joint+operations+graphic).
@@ -19,8 +22,8 @@ also records sheet-level provenance where available.
 - **US Geological Survey** — [archived GeoPDF collection](https://web.archive.org/web/*/https://deltas.usgs.gov/fm/data2/jog/GeoPDF_250K/*).
 - **European Soil Data Centre** — [European Digital Archive of Soil Maps](https://esdac.jrc.ec.europa.eu/content/european-digital-archive-soil-maps-eudasm).
 - **Digital Commonwealth** — [digital collections](https://www.digitalcommonwealth.org/).
-- **Mapstor** — source of selected scans retained in the
-  [original-files releases](https://github.com/ramSeraph/american_world_topo_maps/releases/tag/jog-orig).
+- **Mapstor** — scans from the
+  [Internet Archive topographic maps collection](https://archive.org/details/topographic-maps).
 
 ## New Zealand
 
