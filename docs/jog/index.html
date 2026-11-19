@@ -184,7 +184,7 @@
         map.on('click', 'vector-layer', (e) => {
             new maplibregl.Popup()
                 .setLngLat(e.lngLat)
-                .setHTML(e.features[0].properties.id)
+                .setText(e.features[0].properties.sheet)
                 .addTo(map);
         });
 
