@@ -4,8 +4,7 @@
     <title>ONC Demo</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css' rel='stylesheet' />
-    <script src='https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js'></script>
+    <link href='https://unpkg.com/maplibre-gl@6.19.0/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://unpkg.com/@india-boundary-corrector/maplibre-protocol/dist/index.global.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
@@ -44,7 +43,9 @@
     <input id="opacity-slider" type="range" min="0" max="1" step="0.1" value="1">
 </div>
 
-<script>
+<script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.19.0/dist/maplibre-gl.mjs';
+
     IndiaBoundaryCorrector.registerCorrectionProtocol(maplibregl);
 
     const map = new maplibregl.Map({
@@ -64,14 +65,10 @@
                     tileSize: 256,
                     attribution: 'Tactical Pilotage Charts(TPC) 1:500K from the U.S. Defense Mapping Agency Aerospace Center sourced through <a href="https://maps.lib.utexas.edu/maps/onc/">PCL</a> and <a href="https://archive.org/details/topographic-maps">Mapstor Archive</a>'
                 },
-                'terrarium': {
+                'mapterhorn': {
                     type: 'raster-dem',
-                    tiles: [
-                        'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'
-                    ],
-                    minzoom: 0,
-                    maxzoom: 15,
-                    tileSize: 256,
+                    url: 'https://tiles.mapterhorn.com/tilejson.json',
+                    tileSize: 512,
                     encoding: 'terrarium'
                 },
                 'vector-data': {
@@ -130,7 +127,7 @@
 
     map.on('style.load', () => {
         map.setProjection({ 'type': 'globe' });
-        map.setTerrain({ source: 'terrarium', exaggeration: 2 });
+        map.setTerrain({ source: 'mapterhorn', exaggeration: 2 });
         document.querySelector('#terrain-toggle i').style.color = 'blue';
         map.getCanvas().style.backgroundColor = 'black';
 
@@ -161,7 +158,7 @@
                 map.setTerrain(null);
                 buttonIcon.style.color = 'black';
             } else {
-                map.setTerrain({ source: 'terrarium', exaggeration: 3 });
+                map.setTerrain({ source: 'mapterhorn', exaggeration: 3 });
                 buttonIcon.style.color = 'blue';
             }
         });
