@@ -18,7 +18,7 @@
   - [Georeferenced Sheets](https://github.com/ramseraph/american_world_topo_maps/releases/tag/tpc-georef)
   - [PMTiles](https://github.com/ramseraph/american_world_topo_maps/releases/tag/tpc-pmtiles)
 
-### Joint Operations Graphics (JOG) #TODO
+### Joint Operations Graphics (JOG)
   - Scale: 1:250,000
   - Coverage: Global (except Antarctica but not all sheets are available)
   - [Demo](https://ramseraph.github.io/american_world_topo_maps/jog/)
