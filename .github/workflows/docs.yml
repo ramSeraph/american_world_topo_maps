@@ -22,6 +22,7 @@ jobs:
         run: |
           gh release download onc-georef -p bounds.geojson -O docs/onc/index.geojson
           gh release download tpc-georef -p bounds.geojson -O docs/tpc/index.geojson
+          gh release download jog-georef -p bounds.geojson -O docs/jog/index.geojson
 
       - name: Upload-Artifact
         uses: actions/upload-pages-artifact@v3
